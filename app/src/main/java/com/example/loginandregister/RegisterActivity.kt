@@ -1,9 +1,7 @@
 package com.example.loginandregister
 
-import android.graphics.Color
-import android.os.Build
+import android.annotation.SuppressLint
 import android.os.Bundle
-import android.view.View
 import android.view.View.*
 import android.view.WindowManager
 import android.widget.EditText
@@ -14,6 +12,7 @@ class RegisterActivity : AppCompatActivity() {
     // Declaration variable
     private lateinit var editTextEmail: EditText
     private lateinit var editTextPassword: EditText
+    @SuppressLint("InlinedApi")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)

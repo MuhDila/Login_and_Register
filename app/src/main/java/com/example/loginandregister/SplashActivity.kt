@@ -1,11 +1,10 @@
 package com.example.loginandregister
 
 import android.content.Intent
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
-import android.view.View
+import android.view.View.*
 import android.view.WindowManager
 
 class SplashActivity : AppCompatActivity() {
@@ -17,12 +16,12 @@ class SplashActivity : AppCompatActivity() {
         window.addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
 
         // Setting color status bar and navigator bar
-        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
+        window.decorView.systemUiVisibility = SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
 
+        // Animation
         Handler().postDelayed({
-            startActivity(Intent(this@SplashActivity, RegisterActivity::class.java))
+            startActivity(Intent(this@SplashActivity, IntroductionActivity::class.java))
             finish()
-        }, 4000)
-
+        }, 3000)
     }
 }
