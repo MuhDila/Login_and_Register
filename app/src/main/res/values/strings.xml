@@ -3,4 +3,9 @@
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="name">Name</string>
+    <string name="already_have_an_account">Already have an account?</string>
+    <string name="sign_in">Sign In</string>
+    <string name="hello">Hello, I guest you are new around here. You can start using the application after sign up.
+    </string>
+    <string name="welcome_register">Hello, Welcome 🖐</string>
 </resources>

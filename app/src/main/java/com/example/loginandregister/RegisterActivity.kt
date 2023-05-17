@@ -36,14 +36,18 @@ class RegisterActivity : AppCompatActivity() {
         // Setting when button register (Continue) clicked
         buttonRegister.setOnClickListener {
             // Variable that is converted to a string value
-            val emailName: String = editTextName.getText().toString()
+            val nameText: String = editTextName.getText().toString()
             val emailText: String = editTextEmail.getText().toString()
             val passwordText: String = editTextPassword.getText().toString()
 
             // Condition to check if values are empty
-            if (emailName == "" || emailText == "" || passwordText == "") {
+            if (nameText.isEmpty()) {
                 editTextName.error = "Data harus diisi"
+            }
+            if (emailText.isEmpty()) {
                 editTextEmail.error = "Data harus diisi"
+            }
+            if (passwordText.isEmpty()) {
                 editTextPassword.error = "Data harus diisi"
             } else {
                 Toast.makeText(this, "Good", Toast.LENGTH_SHORT).show()

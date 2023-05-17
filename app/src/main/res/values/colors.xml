@@ -18,4 +18,6 @@
     <color name="black_transparent">#BF000000</color>
     <color name="bottom_sheet_bg">#2B2B2B</color>
     <color name="davys_gray">#5D5E5E</color>
+    <color name="gunmetal">#1A2D34</color>
+    <color name="outer_space">#4E5C5E</color>
 </resources>
