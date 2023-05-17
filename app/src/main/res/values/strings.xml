@@ -8,4 +8,5 @@
     <string name="hello">Hello, I guest you are new around here. You can start using the application after sign up.
     </string>
     <string name="welcome_register">Hello, Welcome 🖐</string>
+    <string name="continue_register">Continue</string>
 </resources>
