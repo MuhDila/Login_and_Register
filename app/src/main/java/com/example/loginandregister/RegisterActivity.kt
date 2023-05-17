@@ -1,6 +1,7 @@
 package com.example.loginandregister
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.view.View.*
 import android.view.WindowManager
@@ -16,6 +17,7 @@ class RegisterActivity : AppCompatActivity() {
     private lateinit var editTextEmail: EditText
     private lateinit var editTextPassword: EditText
     private lateinit var buttonRegister: Button
+    private lateinit var buttonSignIn: Button
     @SuppressLint("InlinedApi")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,14 +28,9 @@ class RegisterActivity : AppCompatActivity() {
         editTextEmail = findViewById(R.id.emailRegister)
         editTextPassword = findViewById(R.id.passwordRegister)
         buttonRegister = findViewById(R.id.buttonRegister)
+        buttonSignIn = findViewById(R.id.button_signin_register)
 
-        // Setting translucent status bar and navigator Bar
-        window.addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
-
-        // Setting color status bar and navigator bar
-        window.decorView.systemUiVisibility = SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
-
-        // Setting when button register (Continue) clicked
+        // Setting when button register (Sign Up) is clicked
         buttonRegister.setOnClickListener {
             // Variable that is converted to a string value
             val nameText: String = editTextName.getText().toString()
@@ -50,9 +47,24 @@ class RegisterActivity : AppCompatActivity() {
             if (passwordText.isEmpty()) {
                 editTextPassword.error = "Data harus diisi"
             } else {
-                Toast.makeText(this, "Good", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Register successful", Toast.LENGTH_SHORT).show()
+                val i = Intent(this, LoginActivity::class.java)
+                startActivity(i)
             }
         }
+
+        // Setting when button Sign Up is clicked
+        buttonSignIn.setOnClickListener {
+            val i = Intent(this, LoginActivity::class.java)
+            startActivity(i)
+        }
+
+        // Setting translucent status bar and navigator Bar
+        window.addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
+
+        // Setting color status bar and navigator bar
+        window.decorView.systemUiVisibility = SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
+
 
     }
 }

@@ -5,8 +5,11 @@
     <string name="name">Name</string>
     <string name="already_have_an_account">Already have an account?</string>
     <string name="sign_in">Sign In</string>
-    <string name="hello">Hello, I guest you are new around here. You can start using the application after sign up.
-    </string>
-    <string name="welcome_register">Hello, Welcome 🖐</string>
+    <string name="hello">Hello, I guest you are new around here. You can start using the application after sign up.</string>
+    <string name="hello_login">I am happy to see you again. You can continue where you left off by logging in.</string>
+    <string name="welcome_register">Welcome to my App 🖐</string>
+    <string name="welcome_login">Welcome Back 🖐</string>
     <string name="continue_register">Continue</string>
+    <string name="don_t_have_an_account">Don\'t have an account?</string>
+    <string name="sign_up">Sign Up</string>
 </resources>
