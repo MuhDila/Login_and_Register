@@ -60,6 +60,5 @@
                 android:background="@drawable/button_bg"
                 android:id="@+id/buttonGetStarted"/>
     </LinearLayout>
-
-
+    
 </androidx.constraintlayout.widget.ConstraintLayout>
