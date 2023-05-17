@@ -45,8 +45,7 @@
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Simple login and register using firebase"
-                android:layout_marginTop="15dp"/>
+                android:text="Simple login and register using firebase"/>
     </LinearLayout>
     <LinearLayout
             android:orientation="vertical"
@@ -57,9 +56,9 @@
                 android:text="Get Started"
                 android:layout_width="190dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="120dp"
-                android:background="@drawable/rounded_border"
-                android:id="@+id/button"/>
+                android:layout_marginBottom="150dp"
+                android:background="@drawable/button_bg"
+                android:id="@+id/buttonGetStarted"/>
     </LinearLayout>
 
 
