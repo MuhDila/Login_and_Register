@@ -62,41 +62,50 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun signUpWithEmailAndPassword() {
-        // Variable that is converted to a string value
-        val nameText: String = editTextName.getText().toString()
-        val emailText: String = editTextEmail.getText().toString()
-        val passwordText: String = editTextPassword.getText().toString()
+        val emailText: String = editTextEmail.text.toString()
+        val passwordText: String = editTextPassword.text.toString()
 
-        // Condition to check if values are empty
         if (emailText.isEmpty()) {
             editTextEmail.error = "Data must be entered"
+            return
         }
+
         if (!Patterns.EMAIL_ADDRESS.matcher(emailText).matches()) {
             editTextEmail.error = "Invalid email address"
+            return
         }
+
         if (passwordText.isEmpty()) {
             editTextPassword.error = "Data must be entered"
+            return
         }
-        if (passwordText.length < 8) {
-            editTextPassword.error = "Password minimum 8 character"
-        }
-        else {
-            auth.createUserWithEmailAndPassword(emailText, passwordText)
-                .addOnCompleteListener(this) { task ->
-                    if (task.isSuccessful) {
-                        // Sign in success, update UI with the signed-in user's information
-                        Log.d(TAG, "createUserWithEmail:success")
-                        val user = auth.currentUser
-                        Toast.makeText(this, "Sign Up With Email : Success", Toast.LENGTH_SHORT).show()
-                        val i = Intent(this, LoginActivity::class.java)
-                        startActivity(i)
+
+        FirebaseAuth.getInstance().fetchSignInMethodsForEmail(emailText)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val signInMethods = task.result?.signInMethods
+
+                    if (signInMethods.isNullOrEmpty()) {
+                        auth.createUserWithEmailAndPassword(emailText, passwordText)
+                            .addOnCompleteListener { createUserTask ->
+                                if (createUserTask.isSuccessful) {
+                                    Log.d(TAG, "createUserWithEmail: success")
+                                    Toast.makeText(this, "Sign Up With Email: Success", Toast.LENGTH_SHORT).show()
+                                    val intent = Intent(this, LoginActivity::class.java)
+                                    startActivity(intent)
+                                } else {
+                                    Log.w(TAG, "createUserWithEmail: failure", createUserTask.exception)
+                                    Toast.makeText(this, "Sign Up With Email: Failure", Toast.LENGTH_SHORT).show()
+
+                                }
+                            }
                     } else {
-                        // If sign in fails, display a message to the user.
-                        Log.w(TAG, "createUserWithEmail:failure", task.exception)
-                        Toast.makeText(this, "Sign Up With Email : Success", Toast.LENGTH_SHORT).show()
+                        Log.w(TAG, "createUserWithEmail: failure", task.exception)
+                        Toast.makeText(this, "Sign Up With Email: Failure, Email already exists", Toast.LENGTH_SHORT).show()
+                        editTextEmail.error = "Email already exists"
                     }
                 }
-        }
+            }
     }
 
 }
