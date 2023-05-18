@@ -1,13 +1,18 @@
 package com.example.loginandregister
 
+import android.content.ContentValues.TAG
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.util.Patterns
 import android.view.View
-import android.view.WindowManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 class LoginActivity : AppCompatActivity() {
 
@@ -16,9 +21,15 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var editTextPassword: EditText
     private lateinit var buttonLogin: Button
     private lateinit var buttonSignUp: Button
+
+    // Declare an instance of FirebaseAuth
+    private lateinit var auth: FirebaseAuth
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
+        // Initialize Firebase Auth
+        auth = Firebase.auth
 
         // Properties initialization variable
         editTextEmail = findViewById(R.id.emailLogin)
@@ -26,23 +37,13 @@ class LoginActivity : AppCompatActivity() {
         buttonLogin = findViewById(R.id.buttonLogin)
         buttonSignUp = findViewById(R.id.button_signup_login)
 
+        // Variable that is converted to a string value
+        val emailText: String = editTextEmail.getText().toString()
+        val passwordText: String = editTextPassword.getText().toString()
+
         // Setting when button Login (Sign In) is clicked
         buttonLogin.setOnClickListener {
-            // Variable that is converted to a string value
-            val emailText: String = editTextEmail.getText().toString()
-            val passwordText: String = editTextPassword.getText().toString()
-
-            // Condition to check if values are empty
-            if (emailText.isEmpty()) {
-                editTextEmail.error = "Data harus diisi"
-            }
-            if (passwordText.isEmpty()) {
-                editTextPassword.error = "Data harus diisi"
-            } else {
-                Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show()
-                val i = Intent(this, MainActivity::class.java)
-                startActivity(i)
-            }
+            signInWithEmailAndPassword()
         }
 
         // Setting when button Sign Up is clicked
@@ -52,11 +53,42 @@ class LoginActivity : AppCompatActivity() {
         }
 
         // Setting translucent status bar and navigator Bar
-        window.addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
+//        window.addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
 
         // Setting color status bar and navigator bar
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
+    }
+    private fun signInWithEmailAndPassword() {
+        // Variable that is converted to a string value
+        val emailText: String = editTextEmail.getText().toString()
+        val passwordText: String = editTextPassword.getText().toString()
 
-
+        // Condition to check if values are empty
+        if (emailText.isEmpty()) {
+            editTextEmail.error = "Data must be entered"
+        }
+        if (!Patterns.EMAIL_ADDRESS.matcher(emailText).matches()) {
+            editTextEmail.error = "Invalid Email Address"
+        }
+        if (passwordText.isEmpty()) {
+            editTextPassword.error = "Data must be entered"
+        }
+        else {
+            auth.signInWithEmailAndPassword(emailText, passwordText)
+                .addOnCompleteListener(this) { task ->
+                    if (task.isSuccessful) {
+                        // Sign in success, update UI with the signed-in user's information
+                        Log.d(TAG, "signInWithEmail:success")
+                        val user = auth.currentUser
+                        Toast.makeText(this, "Sign In With Email : Success", Toast.LENGTH_SHORT).show()
+                        val i = Intent(this, MainActivity::class.java)
+                        startActivity(i)
+                    } else {
+                        // If sign in fails, display a message to the user.
+                        Log.w(TAG, "signInWithEmail:failure", task.exception)
+                        Toast.makeText(this, "Sign In With Email : Failure", Toast.LENGTH_SHORT).show()
+                    }
+                }
+        }
     }
 }
