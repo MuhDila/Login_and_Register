@@ -62,8 +62,14 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun signUpWithEmailAndPassword() {
+        val nameText: String = editTextName.text.toString()
         val emailText: String = editTextEmail.text.toString()
         val passwordText: String = editTextPassword.text.toString()
+
+        if (nameText.isEmpty()) {
+            editTextName.error = "Data must be entered"
+            return
+        }
 
         if (emailText.isEmpty()) {
             editTextEmail.error = "Data must be entered"
@@ -77,6 +83,11 @@ class RegisterActivity : AppCompatActivity() {
 
         if (passwordText.isEmpty()) {
             editTextPassword.error = "Data must be entered"
+            return
+        }
+
+        if (passwordText.length < 8) {
+            editTextPassword.error = "Password minimum 8 character"
             return
         }
 
@@ -96,7 +107,6 @@ class RegisterActivity : AppCompatActivity() {
                                 } else {
                                     Log.w(TAG, "createUserWithEmail: failure", createUserTask.exception)
                                     Toast.makeText(this, "Sign Up With Email: Failure", Toast.LENGTH_SHORT).show()
-
                                 }
                             }
                     } else {
