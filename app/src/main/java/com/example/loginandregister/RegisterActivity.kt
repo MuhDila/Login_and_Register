@@ -1,6 +1,7 @@
 package com.example.loginandregister
 
 import android.annotation.SuppressLint
+import android.app.ProgressDialog
 import android.content.ContentValues.TAG
 import android.content.Intent
 import android.os.Bundle
@@ -11,7 +12,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.WindowCompat
+import android.os.Handler
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -27,14 +28,15 @@ class RegisterActivity : AppCompatActivity() {
 
     // Declare an instance of FirebaseAuth
     private lateinit var auth: FirebaseAuth
+    private lateinit var mDialog: ProgressDialog
 
     @SuppressLint("InlinedApi")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
-
         // Initialize Firebase Auth
         auth = Firebase.auth
+        mDialog = ProgressDialog(this)
 
         // Properties initialization variable
         editTextName = findViewById(R.id.nameRegister)
@@ -66,6 +68,9 @@ class RegisterActivity : AppCompatActivity() {
         val nameText: String = editTextName.text.toString()
         val emailText: String = editTextEmail.text.toString()
         val passwordText: String = editTextPassword.text.toString()
+        mDialog.setMessage("Processing...")
+        mDialog.show()
+
 
         if (nameText.isEmpty()) {
             editTextName.error = "Data must be entered"
@@ -105,15 +110,18 @@ class RegisterActivity : AppCompatActivity() {
                                     Toast.makeText(this, "Sign Up With Email: Success", Toast.LENGTH_SHORT).show()
                                     val intent = Intent(this, LoginActivity::class.java)
                                     startActivity(intent)
+                                    mDialog.dismiss()
                                 } else {
                                     Log.w(TAG, "createUserWithEmail: failure", createUserTask.exception)
                                     Toast.makeText(this, "Sign Up With Email: Failure", Toast.LENGTH_SHORT).show()
+                                    mDialog.dismiss()
                                 }
                             }
                     } else {
                         Log.w(TAG, "createUserWithEmail: failure", task.exception)
                         Toast.makeText(this, "Sign Up With Email: Failure, Email already exists", Toast.LENGTH_SHORT).show()
                         editTextEmail.error = "Email already exists"
+                        mDialog.dismiss()
                     }
                 }
             }
