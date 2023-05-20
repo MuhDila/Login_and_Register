@@ -71,7 +71,6 @@ class RegisterActivity : AppCompatActivity() {
         mDialog.setMessage("Processing...")
         mDialog.show()
 
-
         if (nameText.isEmpty()) {
             editTextName.error = "Data must be entered"
             return
