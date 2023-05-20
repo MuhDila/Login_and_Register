@@ -72,16 +72,19 @@ class LoginActivity : AppCompatActivity() {
 
         if (emailText.isEmpty()) {
             editTextEmail.error = "Data must be entered"
+            mDialog.dismiss()
             return
         }
 
         if (!Patterns.EMAIL_ADDRESS.matcher(emailText).matches()) {
             editTextEmail.error = "Invalid email address"
+            mDialog.dismiss()
             return
         }
 
         if (passwordText.isEmpty()) {
             editTextPassword.error = "Data must be entered"
+            mDialog.dismiss()
             return
         }
 
