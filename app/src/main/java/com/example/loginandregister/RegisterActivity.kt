@@ -7,11 +7,11 @@ import android.os.Bundle
 import android.util.Log
 import android.util.Patterns
 import android.view.View.*
-import android.view.WindowManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.WindowCompat
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -59,6 +59,7 @@ class RegisterActivity : AppCompatActivity() {
 
         // Setting color status bar and navigator bar
         window.decorView.systemUiVisibility = SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
+
     }
 
     private fun signUpWithEmailAndPassword() {
