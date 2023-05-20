@@ -93,6 +93,7 @@ class RegisterActivity : AppCompatActivity() {
 
         if (passwordText.length < 8) {
             editTextPassword.error = "Password minimum 8 character"
+            mDialog.dismiss()
             return
         }
 
