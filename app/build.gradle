@@ -54,7 +54,6 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'com.google.firebase:firebase-auth-ktx:22.0.0'
     implementation 'com.google.firebase:firebase-database:20.2.1'
-    implementation 'com.google.firebase:firebase-storage:20.2.0'
 
     // Progress dialog libraries
     implementation 'com.jpardogo.googleprogressbar:library:1.2.0'

@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.example.loginandregister
 
 import android.app.ProgressDialog

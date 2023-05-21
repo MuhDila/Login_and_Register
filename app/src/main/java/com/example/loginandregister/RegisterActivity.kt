@@ -12,9 +12,14 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import android.os.Handler
+import com.example.loginandregister.databinding.ActivityRegisterBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.ktx.Firebase
 
 class RegisterActivity : AppCompatActivity() {
@@ -29,11 +34,16 @@ class RegisterActivity : AppCompatActivity() {
     // Declare an instance of FirebaseAuth
     private lateinit var auth: FirebaseAuth
     private lateinit var mDialog: ProgressDialog
-
+    private lateinit var binding: ActivityRegisterBinding
+    private lateinit var database: DatabaseReference
     @SuppressLint("InlinedApi")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
+
+        binding = ActivityRegisterBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
         // Initialize Firebase Auth
         auth = Firebase.auth
         mDialog = ProgressDialog(this)
@@ -46,7 +56,7 @@ class RegisterActivity : AppCompatActivity() {
         buttonSignIn = findViewById(R.id.button_signin_register)
 
         // Setting when button register (Sign Up) is clicked
-        buttonRegister.setOnClickListener {
+        binding.buttonRegister.setOnClickListener {
             signUpWithEmailAndPassword()
         }
 
@@ -107,6 +117,20 @@ class RegisterActivity : AppCompatActivity() {
                     val signInMethods = task.result?.signInMethods
 
                     if (signInMethods.isNullOrEmpty()) {
+                        val name = binding.nameRegister.text.toString()
+                        val email = binding.emailRegister.text.toString().replace(".", "_")
+                        val password = binding.passwordRegister.text.toString()
+
+                        database = FirebaseDatabase.getInstance().getReference("User")
+                        val user = User(name, email, password)
+                        database.child(email).setValue(user).addOnCompleteListener {
+                            binding.nameRegister.text
+                            binding.emailRegister.text
+                            binding.passwordRegister.text
+                        }.addOnFailureListener {
+
+                        }
+
                         auth.createUserWithEmailAndPassword(emailText, passwordText)
                             .addOnCompleteListener { createUserTask ->
                                 if (createUserTask.isSuccessful) {
