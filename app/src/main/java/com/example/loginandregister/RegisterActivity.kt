@@ -16,10 +16,7 @@ import com.example.loginandregister.databinding.ActivityRegisterBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 import com.google.firebase.ktx.Firebase
 
 class RegisterActivity : AppCompatActivity() {
@@ -124,9 +121,9 @@ class RegisterActivity : AppCompatActivity() {
                         database = FirebaseDatabase.getInstance().getReference("User")
                         val user = User(name, email, password)
                         database.child(email).setValue(user).addOnCompleteListener {
-                            binding.nameRegister.text
-                            binding.emailRegister.text
-                            binding.passwordRegister.text
+                            binding.nameRegister.text?.clear()
+                            binding.emailRegister.text?.clear()
+                            binding.passwordRegister.text?.clear()
                         }.addOnFailureListener {
 
                         }

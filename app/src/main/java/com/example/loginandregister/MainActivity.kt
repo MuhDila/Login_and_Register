@@ -1,18 +1,25 @@
 package com.example.loginandregister
 
 import android.content.DialogInterface
-import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 
-
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var textName: TextView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        textName = findViewById(R.id.textviewMain)
+
+        val extras: Bundle? = intent.extras
+        val accName: String? = extras?.getString("nameFromLog")
+        textName.text = "Hello ${accName}"
 
         // Setting translucent status bar and navigator Bar
         window.addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)

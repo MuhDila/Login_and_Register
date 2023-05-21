@@ -13,8 +13,11 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.loginandregister.databinding.ActivityLoginBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.ktx.Firebase
 
 class LoginActivity : AppCompatActivity() {
@@ -24,14 +27,20 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var editTextPassword: EditText
     private lateinit var buttonLogin: Button
     private lateinit var buttonSignUp: Button
+    private lateinit var sendName: String
 
     // Declare an instance of FirebaseAuth
     private lateinit var auth: FirebaseAuth
     private lateinit var mDialog: ProgressDialog
+    private lateinit var binding: ActivityLoginBinding
+    private lateinit var database: DatabaseReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
+        binding = ActivityLoginBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         // Initialize Firebase Auth
         auth = Firebase.auth
@@ -43,12 +52,8 @@ class LoginActivity : AppCompatActivity() {
         buttonLogin = findViewById(R.id.buttonLogin)
         buttonSignUp = findViewById(R.id.button_signup_login)
 
-        // Variable that is converted to a string value
-        val emailText: String = editTextEmail.getText().toString()
-        val passwordText: String = editTextPassword.getText().toString()
-
         // Setting when button Login (Sign In) is clicked
-        buttonLogin.setOnClickListener {
+        binding.buttonLogin.setOnClickListener {
             signInWithEmailAndPassword()
         }
 
@@ -69,6 +74,7 @@ class LoginActivity : AppCompatActivity() {
     private fun signInWithEmailAndPassword() {
         val emailText: String = editTextEmail.text.toString()
         val passwordText: String = editTextPassword.text.toString()
+        val emailLog : String = binding.emailLogin.text.toString().replace(".", "_")
         mDialog.setMessage("Processing...")
         mDialog.show()
 
@@ -99,17 +105,17 @@ class LoginActivity : AppCompatActivity() {
                         Log.w(TAG, "createUserWithEmail: failure", task.exception)
                         Toast.makeText(this, "Sign In With Email: Failure. Email doesn't exists", Toast.LENGTH_SHORT).show()
                         editTextEmail.error = "Email doesn't exists"
+                        mDialog.dismiss()
                     } else {
                         auth.signInWithEmailAndPassword(emailText, passwordText)
                             .addOnCompleteListener(this) { task ->
                                 if (task.isSuccessful) {
                                     // Sign in success, update UI with the signed-in user's information
                                     Log.d(TAG, "signInWithEmail:success")
-                                    val user = auth.currentUser
+                                    auth.currentUser
                                     Toast.makeText(this, "Sign In With Email : Success", Toast.LENGTH_SHORT).show()
-                                    val i = Intent(this, MainActivity::class.java)
-                                    startActivity(i)
                                     mDialog.dismiss()
+                                    readData(emailLog)
                                 } else {
                                     // If sign in fails, display a message to the user.
                                     Log.w(TAG, "signInWithEmail:failure", task.exception)
@@ -121,5 +127,23 @@ class LoginActivity : AppCompatActivity() {
                     }
                 }
             }
+    }
+    private fun readData(email: String) {
+        database = FirebaseDatabase.getInstance().getReference("User")
+        database.child(email).get().addOnSuccessListener {
+            if (it.exists()){
+                val name = it.child("name").value
+                binding.emailLogin.text?.clear()
+                binding.passwordLogin.text?.clear()
+                sendName = name.toString()
+                val i = Intent(this, MainActivity::class.java)
+                i.putExtra("nameFromLog", sendName)
+                startActivity(i)
+            }else{
+                Toast.makeText(this,"User Doesn't Exist",Toast.LENGTH_SHORT).show()
+            }
+        }.addOnFailureListener{
+            Toast.makeText(this,"Failed",Toast.LENGTH_SHORT).show()
+        }
     }
 }
